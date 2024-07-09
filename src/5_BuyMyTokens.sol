@@ -34,6 +34,7 @@ contract BuyMyTokens {
         require(_amounts.length == 3, "There are 3 tokens");
         for(uint256 i; i < 3; i++) {
             MarqToken token = tokens[i];
+            //@audit
             uint256 amount = _amounts[i];
             uint256 price = tokenPrices[token];
             _checkPurchasingPower(msg.value, amount, price);

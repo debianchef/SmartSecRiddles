@@ -34,9 +34,13 @@ contract CallMeMaybe {
         require(depositers[msg.sender], "Don't be shy, join the group first");
         uint256 startBalance = IERC20(token).balanceOf(address(this));
 
+
+//@audit 
         // make call here
         _target.call(_calldata);
 
+
+//@audit 
         require(IERC20(token).balanceOf(address(this)) >= startBalance, "Isn't the point of crypto to trust each other, smh");
     }
 

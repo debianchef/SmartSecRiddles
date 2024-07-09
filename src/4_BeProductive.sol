@@ -26,6 +26,7 @@ contract BeProductive {
         require(!isMotivated[msg.sender], "Dont quit on your previous dream");
         require(_goal > 50 ether, "shoot for the stars");
         require(_startAmount < _goal - 20 ether, "no free money");
+        //@audit unchecked returned value 
         token.transferFrom(msg.sender, address(this), _startAmount);
         goalTracker[msg.sender] = ProgressTracker(_startAmount, _goal);
         isMotivated[msg.sender] = true;
@@ -39,7 +40,7 @@ contract BeProductive {
 
         goalTracker[msg.sender] = ProgressTracker(0, 0);
         isMotivated[msg.sender] = false;
-
+//@audit 
         token.mint(100 ether);
         token.transfer(msg.sender, tracker.saved + 100 ether);
     }

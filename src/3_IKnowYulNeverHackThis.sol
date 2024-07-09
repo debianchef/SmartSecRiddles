@@ -109,17 +109,20 @@ contract IKnowYulNeverHackThis {
                     mstore(nextMemoryLocation, winner)
         
                     length := add( length, 1 )
-
+//@audit  missing   mstore( location, length )
                     mstore(0x40, newMsize )
                 }
             }
         }
 
+//@audit 
         uint256 shareOfPrize = address(this).balance / winners.length;
 
         uint256 i;
         uint256 winnersLength = winners.length;
         for(i; i < winners.length; ++i) {
+
+            //@audit   gas griefing 
             (bool sent, bytes memory data) = winners[i].call{value: shareOfPrize}("");
         }
 

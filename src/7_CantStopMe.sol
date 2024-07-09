@@ -52,6 +52,7 @@ contract Auction {
     }
 
     // pulls out ether to treasury
+//@audit
     function pullToTreasury(address _treasury) external onlyAdmin {
         (bool success, ) = _treasury.call{value: address(this).balance}("");
     }
@@ -65,11 +66,14 @@ contract Auction {
 
     // allows user to win the auction by bidding. 
     function winAuction() external payable {
+     //@audit
         require(msg.value >= currPrice, "pay the price");
         require(inProgress, "No Auction");
         if(lastPrice < currPrice) {
             incrementStartPrice = true;
         }
+
+        //@audit
         lastPrice = msg.value;
         
         nft.mint(msg.sender);

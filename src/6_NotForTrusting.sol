@@ -37,10 +37,13 @@ contract Staking is IERC721Receiver, IStaking {
         require(_timeLocked > 99, "locked too short");
         require(_timeLocked < 101, "locked too long");
         require(!isStaking[msg.sender], "One NFT at a time");
+     //@audit
         nft.safeTransferFrom(msg.sender, address(this), _tokenId);
         stakeData[msg.sender] = StakeData(block.number, _timeLocked, _tokenId);
         isStaking[msg.sender] = true;
     }
+
+
 
     function unstake(uint256 _tokenId, bool claim) external guard {
         require(isStaking[msg.sender], "Stake first");
@@ -50,6 +53,8 @@ contract Staking is IERC721Receiver, IStaking {
         if(claim) {
             rewarder.claim(msg.sender);
         }
+
+        //@audit 
         nft.safeTransferFrom(address(this), msg.sender, _tokenId);
         isStaking[msg.sender] = false;
         userStake = StakeData(0, 0, 0);
@@ -103,6 +108,7 @@ contract Rewarder is IStaking{
         bool isStaking = staking.isStaking(msg.sender);
         StakeData memory userStake = staking.getStakerData(msg.sender);
         require(isStaking, "gotta stake to make money");
+        //@audit
         require(block.number >= userStake.stakeStart + userStake.stakeDuration, "dont be hasty");
         require(!hasClaimed[msg.sender], "no double dipping");
         hasClaimed[msg.sender] = true;
@@ -113,11 +119,14 @@ contract Rewarder is IStaking{
 
     function claim(address _for) external guard {
         bool isStaking = staking.isStaking(_for);
+        //@audit
         StakeData memory userStake = staking.getStakerData(msg.sender);
         require(msg.sender == address(staking), "not your rewards");
+        
         require(block.number >= userStake.stakeStart + userStake.stakeDuration, "you know about vm.roll(), right?");
+        //@audit
         require(!hasClaimed[msg.sender], "no double dipping");
-
+ //@audit
         hasClaimed[msg.sender] = true;
         token.mint(1000 ether);
         token.transfer(_for, 1000 ether);

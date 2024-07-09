@@ -1,5 +1,7 @@
 # SmartSecRiddles: Start Here
 
+My solutions to  https://github.com/marjon-call/SmartSecRiddles
+
 ## Background
 
 This is a series of solidity CTFs to help auditors and developers become more aware of common vulnerabilities in smart contracts. I find that most CTFs, although useful, do not contain bugs that you typically find in the real world. Each challenge in this CTF is based on a vulnerability I have either found in a contest or bug bounty. 

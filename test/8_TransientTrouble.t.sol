@@ -23,9 +23,10 @@ contract TransientTrouble is Test {
     function test_GetThisPassing_8() public {
 
         address hacker = address(0xBAD);
-
+        uint256 amount = 0.1 ether; 
+vm.deal(hacker , amount);
         vm.startPrank(hacker);
-        
+        daClub.externalJoinClub{value : amount}();
         vm.stopPrank();
 
         assertGt(ticket.balanceOf(hacker), 2);
