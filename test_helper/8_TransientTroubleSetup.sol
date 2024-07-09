@@ -14,12 +14,7 @@ contract TransientTroubleHelper is Test {
 
 
     constructor() {
-        ticket = new NFT();
-        nftAddress = address(ticket);
 
-        deployed = new ExclusiveClub(0.1 ether, nftAddress);
-
-        vm.deal(address(0xBAD), 0.1 ether);
     }
 
 

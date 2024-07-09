@@ -2,7 +2,6 @@
 pragma solidity ^0.8.25;
 
 import { ExclusiveClub } from "../src/8_TransientTrouble.sol";
-import { TransientTroubleHelper } from "../test_helper/8_TransientTroubleSetup.sol";
 import "forge-std/Test.sol";
 import "../mocks/NFT.sol";
 
@@ -11,12 +10,16 @@ contract TransientTrouble is Test {
 
     NFT public ticket;
     ExclusiveClub daClub;
+       address nftAddress;
 
 
     function setUp() public {
-        TransientTroubleHelper dontpeak = new TransientTroubleHelper();
-        daClub = dontpeak.deployed();
-        ticket = dontpeak.ticket();
+         ticket = new NFT();
+        nftAddress = address(ticket);
+
+        daClub = new ExclusiveClub(0.1 ether, nftAddress);
+
+        vm.deal(address(0xBAD), 0.1 ether);
     }
 
 
